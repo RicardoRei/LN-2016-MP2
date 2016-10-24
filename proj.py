@@ -36,7 +36,7 @@ def countNgramFrequency(ngram_tokens):
 	return result
 
 
-	
+#prints output according to professors' specification	
 def evaluationFormatting(countedNgram):
 	for element in countedNgram:
 		new=""
