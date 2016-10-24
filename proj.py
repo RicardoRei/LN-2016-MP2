@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import sys
 import re
 import nltk
 from nltk import bigrams
@@ -34,17 +35,7 @@ def countNgramFrequency(ngram_tokens):
 	result.sort(reverse=True)
 	return result
 
-fileIn = open('Corpora/test.txt', 'rU')
-processed_text = processPunctuation(fileIn)
-fileIn.close()
-print (processed_text)
 
-# split the texts into tokens
-tokens = nltk.word_tokenize(processed_text)
-tokens = [token.lower() for token in tokens if (len(token) > 1)] #same as unigrams
-bi_tokens = nltk.bigrams(tokens)
-
-counted_bigram = countNgramFrequency(list(bi_tokens))
 	
 def evaluationFormatting(countedNgram):
 	for element in countedNgram:
@@ -52,7 +43,19 @@ def evaluationFormatting(countedNgram):
 		for i in element[1]:
 			new=new+i+" "
 		print "%s%d"%(new,element[0])
-	
-	
 
+
+cmdargs=sys.argv
+fileIn = open(cmdargs[1], 'rU')
+processed_text = processPunctuation(fileIn)
+fileIn.close()
+print (processed_text)
+	
+# split the texts into tokens
+tokens = nltk.word_tokenize(processed_text)
+tokens = [token.lower() for token in tokens if (len(token) > 1)] #same as unigrams
+bi_tokens = nltk.bigrams(tokens)
+	
+counted_bigram = countNgramFrequency(list(bi_tokens))
+	
 evaluationFormatting(counted_bigram)
