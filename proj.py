@@ -51,7 +51,7 @@ def evaluationFormatting(countedNgram):
 		new=""
 		for i in element[1]:
 			new=new+i+" "
-		print "%s %d"%(new,element[0])
+		print "%s%d"%(new,element[0])
 	
 	
 
