@@ -6,7 +6,7 @@ from nltk import trigrams
 
 
 #@brief:
-#	Function that receives a file and reades every line adding a space at right and left of every 
+#	Function that receives a file and reads every line adding a space at right and left of every 
 #	punctuation.
 def processPunctuation(file):
 	text = ""
@@ -45,6 +45,14 @@ tokens = [token.lower() for token in tokens if (len(token) > 1)] #same as unigra
 bi_tokens = nltk.bigrams(tokens)
 
 counted_bigram = countNgramFrequency(list(bi_tokens))
+	
+def evaluationFormatting(countedNgram):
+	for element in countedNgram:
+		new=""
+		for i in element[1]:
+			new=new+i+" "
+		print "%s %d"%(new,element[0])
+	
+	
 
-for element in counted_bigram:
-	print element
+evaluationFormatting(counted_bigram)
