@@ -4,7 +4,7 @@
 
 
 
-names=(Corpora/test.txt 
+names=(Corpora/treino/AlmadaNegreiros
 	#Corpora/test2.txt para adicionar mais filenames
 	#devem estar separados por espacos
 	)

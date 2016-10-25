@@ -15,6 +15,7 @@ def processPunctuation(file):
 	for line in file:
 		result = re.sub(r'((\.\.\.)|[:,!?;.])', r' \1 ', line)
 		text = text + result
+	
 	return text
 
 #@brief:
@@ -37,10 +38,9 @@ def countNgramFrequency(ngram_tokens):
 	return result
 
 
-#prints output according to professors' specification	
+#writes .txt according to professors' specification	
 def writeToFile(countedNgram,filename):
-	indexNr = filename.index('.')
-	newFilename=filename[:indexNr]+"out.txt"
+	newFilename=str(filename)+"out.txt"
 	
 	if os.path.isfile(newFilename):
 		os.remove(newFilename)
@@ -52,21 +52,37 @@ def writeToFile(countedNgram,filename):
 		for i in element[1]:
 			new=new+i+" "
 		outputFile.write(new +" "+str(element[0])+"\n")
+		
+#ngram is the number corresponding to n-gram, EX: if we want to calculate probabilities over bigrams, ngram should be 2		
+def probabilities(filename,ngram):
+	f=open(filename,'r')
 
-cmdargs=sys.argv
-fileIn = open(cmdargs[1], 'rU')
-#fileIn = open('Corpora/test.txt', 'rU')
-processed_text = processPunctuation(fileIn)
-fileIn.close()
-print (processed_text)
+			
 	
-# split the texts into tokens
-tokens = nltk.word_tokenize(processed_text)
-tokens = [token.lower() for token in tokens if (len(token) > 1)] #same as unigrams
-tri_tokens=nltk.trigrams(tokens)
-bi_tokens = nltk.bigrams(tokens)
 	
-counted_bigram = countNgramFrequency(list(bi_tokens))
-counted_trigram=countNgramFrequency(list(tri_tokens))
-
-writeToFile(counted_bigram,cmdargs[1])
+def main():
+	cmdargs=sys.argv
+	authorText=""
+	for file in os.listdir(cmdargs[1]):
+		f=open(cmdargs[1]+"/"+file,'r')
+		processed_text = processPunctuation(f)
+		authorText+=processed_text+"\n"
+		print file
+		
+		
+	# split the texts into tokens
+	#tokens = nltk.word_tokenize(authorText)
+	#tokens = [token.lower() for token in tokens if (len(token) > 1)] #same as unigrams
+	#tri_tokens=nltk.trigrams(tokens)
+	#bi_tokens = nltk.bigrams(tokens)
+		
+	#counted_bigram = countNgramFrequency(list(bi_tokens))
+	#counted_trigram=countNgramFrequency(list(tri_tokens))
+	
+	authorPath=cmdargs[1].split("/")
+	authorName=authorPath[2]
+	
+	#writeToFile(counted_trigram,authorName)
+	
+	
+main()
