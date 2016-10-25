@@ -40,7 +40,7 @@ def countNgramFrequency(ngram_tokens):
 
 #writes .txt according to professors' specification	
 def writeToFile(countedNgram,filename):
-	newFilename=str(filename)+"out.txt"
+	newFilename=str(filename)+".txt"
 	
 	if os.path.isfile(newFilename):
 		os.remove(newFilename)
@@ -53,9 +53,23 @@ def writeToFile(countedNgram,filename):
 			new=new+i+" "
 		outputFile.write(new +" "+str(element[0])+"\n")
 		
-#ngram is the number corresponding to n-gram, EX: if we want to calculate probabilities over bigrams, ngram should be 2		
+#ngram is the number corresponding to n-gram, EX: if we want to calculate probabilities over bigrams, ngram should be bi		
 def probabilities(filename,ngram):
-	f=open(filename,'r')
+	f=open(ngram+filename,'r')
+	for line in f:
+		print "bla"
+
+
+#creates file under author directory with all text processed
+def createProcessedFile(filename,text):
+	
+	newFilename=str(filename)+".txt"
+	if os.path.isfile(newFilename):
+		os.remove(newFilename)
+		
+	os.mknod(newFilename)
+	outputFile=open(newFilename,"w")
+	outputFile.write(text)
 
 			
 	
@@ -67,8 +81,13 @@ def main():
 		f=open(cmdargs[1]+"/"+file,'r')
 		processed_text = processPunctuation(f)
 		authorText+=processed_text+"\n"
+		f.close()
 		print file
-		
+	
+	authorPath=cmdargs[1].split("/")
+	authorName=authorPath[2]
+	
+	createProcessedFile(cmdargs[1]+"/proc"+authorName,authorText)
 		
 	# split the texts into tokens
 	#tokens = nltk.word_tokenize(authorText)
@@ -79,8 +98,7 @@ def main():
 	#counted_bigram = countNgramFrequency(list(bi_tokens))
 	#counted_trigram=countNgramFrequency(list(tri_tokens))
 	
-	authorPath=cmdargs[1].split("/")
-	authorName=authorPath[2]
+	
 	
 	#writeToFile(counted_trigram,authorName)
 	
