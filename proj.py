@@ -3,6 +3,7 @@ import sys
 import re
 import os
 import nltk
+import nltk.tokenize
 from nltk import bigrams
 from nltk import trigrams
 
@@ -55,13 +56,13 @@ def writeToFile(countedNgram,filename):
 		
 #ngram is the number corresponding to n-gram, EX: if we want to calculate probabilities over bigrams, ngram should be bi		
 def probabilities(filename,ngram):
-	f=open(ngram+filename,'r')
+	fileIn=open(filename,'r')
 	for line in f:
 		print "bla"
 
 
 #creates file under author directory with all text processed
-def createProcessedFile(filename,text):
+def createProcessedFile(filename,processed_text):
 	
 	newFilename=str(filename)+".txt"
 	if os.path.isfile(newFilename):
@@ -69,11 +70,11 @@ def createProcessedFile(filename,text):
 		
 	os.mknod(newFilename)
 	outputFile=open(newFilename,"w")
-	outputFile.write(text)
+	outputFile.write(processed_text)
 
 			
 	
-	
+#so far, we have all texts from a specific author in variable authorText	
 def main():
 	cmdargs=sys.argv
 	authorText=""
@@ -87,10 +88,13 @@ def main():
 	authorPath=cmdargs[1].split("/")
 	authorName=authorPath[2]
 	
-	createProcessedFile(cmdargs[1]+"/proc"+authorName,authorText)
-		
+	#createProcessedFile(cmdargs[1]+"/proc"+authorName,authorText)
+	
+	
+	
 	# split the texts into tokens
-	#tokens = nltk.word_tokenize(authorText)
+	#tokens = nltk.word_tokenize(text)
+	
 	#tokens = [token.lower() for token in tokens if (len(token) > 1)] #same as unigrams
 	#tri_tokens=nltk.trigrams(tokens)
 	#bi_tokens = nltk.bigrams(tokens)
