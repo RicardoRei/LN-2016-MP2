@@ -4,12 +4,11 @@
 
 
 
-names=(Corpora/treino/AlmadaNegreiros bigramas
+names=(Corpora/treino/Einstein Corpora/treino/Tolkien
 	#Corpora/test2.txt para adicionar mais filenames
 	#devem estar separados por espacos
 	)
-
 for i in ${names[*]}; 
 do
-	python proj.py $i
+	python proj.py $i bigramas
 done

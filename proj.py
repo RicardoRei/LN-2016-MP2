@@ -66,7 +66,8 @@ def probabilities(filename,ngram):
 
 			
 	
-#so far, we have all texts from a specific author in variable authorText	
+#so far, we have all texts from a specific author in variable authorText
+#ex: python proj.py Corpora/treino/Einstein bigramas
 def main():
 	cmdargs=sys.argv
 	authorText=""
