@@ -40,9 +40,11 @@ def countNgramFrequency(ngram_tokens):
 
 
 #writes .txt according to professors' specification	
-def writeToFile(countedNgram,filename):
-	newFilename=str(filename)+".txt"
+def writeToFile(countedNgram,authorName,ngramas):
+	directoryName = "Corpora/treino/"+authorName+"/"
+	newFilename = ngramas+authorName+".txt"
 	
+	os.chdir(directoryName)
 	if os.path.isfile(newFilename):
 		os.remove(newFilename)
 		
@@ -61,16 +63,6 @@ def probabilities(filename,ngram):
 		print "bla"
 
 
-#creates file under author directory with all text processed
-def createProcessedFile(filename,processed_text):
-	
-	newFilename=str(filename)+".txt"
-	if os.path.isfile(newFilename):
-		os.remove(newFilename)
-		
-	os.mknod(newFilename)
-	outputFile=open(newFilename,"w")
-	outputFile.write(processed_text)
 
 			
 	
@@ -79,32 +71,36 @@ def main():
 	cmdargs=sys.argv
 	authorText=""
 	for file in os.listdir(cmdargs[1]):
-		f=open(cmdargs[1]+"/"+file,'r')
-		processed_text = processPunctuation(f)
-		authorText+=processed_text+"\n"
-		f.close()
-		print file
+		if "gramas" not in str(file):
+			f=open(cmdargs[1]+"/"+file,'r')
+			processed_text = processPunctuation(f)
+			authorText+=processed_text+"\n"
+			f.close()
+			print "read from :"+str(file)
 	
 	authorPath=cmdargs[1].split("/")
 	authorName=authorPath[2]
 	
-	#createProcessedFile(cmdargs[1]+"/proc"+authorName,authorText)
+	tokens = nltk.word_tokenize(authorText)
+	
+	ngramas=cmdargs[2]
+	
+	if ngramas=="bigramas":
+		tokens = nltk.bigrams(tokens)
+	if ngramas=="trigramas":
+		tokens = nltk.trigrams(tokens)
+		
+	counted_ngram = countNgramFrequency(list(tokens))
 	
 	
+	writeToFile(counted_ngram,authorName,ngramas)
 	
-	# split the texts into tokens
-	#tokens = nltk.word_tokenize(text)
 	
 	#tokens = [token.lower() for token in tokens if (len(token) > 1)] #same as unigrams
-	#tri_tokens=nltk.trigrams(tokens)
-	#bi_tokens = nltk.bigrams(tokens)
-		
-	#counted_bigram = countNgramFrequency(list(bi_tokens))
-	#counted_trigram=countNgramFrequency(list(tri_tokens))
 	
 	
 	
-	#writeToFile(counted_trigram,authorName)
+	
 	
 	
 main()
