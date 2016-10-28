@@ -85,7 +85,7 @@ def treino():
 			authorText += processPunctuation(f).decode('utf-8')
 			f.close()
 			testToken = nltk.word_tokenize(authorText)
-			print file + "closed"
+			print file + " closed"
 
 	authorPath = cmdargs[1].split("/")
 	authorName = authorPath[2]
@@ -132,6 +132,7 @@ def writeToFileTeste(countedNgram, ngramas):
 	outputFile.close()
 	os.chdir(cwd)
 	
+	
 #receives ngram and author, and returns the number of ngrams in the test that match the ones inside the authors directory
 def likelihood(ngram, authorName):
 	grama = len(ngram[0][1])
@@ -144,21 +145,20 @@ def likelihood(ngram, authorName):
 		fTreino=open("Corpora/treino/"+authorName+"/trigramas"+authorName+".txt",'r')
 	
 	writeToFileTeste(ngram,grama)	
-	
-	#Go get both afiles and compare
-	"""for line in fTreino:
-		for elem in ngram:
-			field = re.search("to run  1", line)
-			if field is None:	
-				print ("hey")
-			else:
-				p1 = field.group(0)
-				p2 = field.group(2)	
-			
-				if p1 == elem[1][1] and p2 == elem[1][0]:
-					print IGUAIS"""
-			
-	return 0
+	testFile = open("Corpora/teste/"+grama+".txt",'r')
+	#Go get both files and compare
+	matchingLines = 0	
+	for line1 in fTreino:
+		line1=re.compile('\w+').findall(line1) #MUST CHANGE REGULAR EXPRESSION TO WORD WORD NUMBER
+		for line2 in testFile:
+			line2=re.compile('\w+').findall(line2)
+			if (line1[0] == line2[0]) and (line1[1] == line2[1]):
+				matchingLines = matchingLines + 1
+		testFile.seek(0,0)
+		
+	testFile.close()
+	fTreino.close()			
+	return matchingLines
 	
 #ex: python proj.py Corpora/treino/Einstein bigramas
 def main():
