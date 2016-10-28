@@ -38,7 +38,7 @@ def countNgramFrequency(ngram_tokens):
 
 
 #writes .txt according to professors' specification	
-def writeToFileTreino(countedNgram,authorName,ngramas):
+def writeToFileTreino(countedNgram, authorName, ngramas):
 	directoryName = "Corpora/treino/"+authorName+"/"
 	newFilename = ngramas+authorName+".txt"
 	
@@ -48,13 +48,13 @@ def writeToFileTreino(countedNgram,authorName,ngramas):
 	if os.path.isfile(newFilename):
 		os.remove(newFilename)
 		
-	os.mknod(newFilename)
-	outputFile=open(newFilename,"w")
+	outputFile = open(newFilename, "a+")
 	for element in countedNgram:
-		new=""
+		new = ""
 		for i in element[1]:
-			new=new+i+" "
-		outputFile.write(new +" "+str(element[0])+"\n")
+			new = new + i + " "
+
+		outputFile.write(new.encode('utf-8') + " " + str(element[0])+"\n")
 	outputFile.close()
 	os.chdir(cwd)
 		
@@ -69,7 +69,6 @@ def probabilities(filename,ngram):
 			
 	
 #so far, we have all texts from a specific author in variable authorText
-
 def createNgram(ngramName,tokens):
 	if ngramName == "bigramas":
 		return nltk.bigrams(tokens)
@@ -80,21 +79,22 @@ def treino():
 	cmdargs=sys.argv
 	authorText=""
 	for file in os.listdir(cmdargs[1]):
-		if "gramas" not in str(file):
-			f = open(cmdargs[1]+"/"+file,'r')
-			processed_text = processPunctuation(f)
-			authorText+= processed_text+"\n"
+		if "gramas" not in file and file.endswith(".txt"):
+			print "reading from: " + file
+			f = open(cmdargs[1]+"/" + file, 'r')
+			authorText += processPunctuation(f).decode('utf-8')
 			f.close()
-			print "read from :"+str(file)
-	
+			testToken = nltk.word_tokenize(authorText)
+			print file + "closed"
+
 	authorPath = cmdargs[1].split("/")
 	authorName = authorPath[2]
 	
 	tokens = nltk.word_tokenize(authorText)
 	ngramasName = cmdargs[2]
-	ngrams = createNgram(ngramasName,tokens)	
+	ngrams = createNgram(ngramasName, tokens)	
 	counted_ngram = countNgramFrequency(list(ngrams))
-	writeToFileTreino(counted_ngram,authorName,ngramasName)
+	writeToFileTreino(counted_ngram, authorName, ngramasName)
 	#tokens = [token.lower() for token in tokens if (len(token) > 1)] #same as unigrams
 
 def identifyAuthor(args):	
@@ -114,7 +114,7 @@ def identifyAuthor(args):
 		
 	print dictionary
 	
-def writeToFileTeste(countedNgram,ngramas):
+def writeToFileTeste(countedNgram, ngramas):
 	directoryName = "Corpora/teste/"
 	newFilename = ngramas+".txt"
 	
@@ -123,8 +123,7 @@ def writeToFileTeste(countedNgram,ngramas):
 	if os.path.isfile(newFilename):
 		os.remove(newFilename)
 		
-	os.mknod(newFilename)
-	outputFile=open(newFilename,"w")
+	outputFile=open(newFilename,"a+")
 	for element in countedNgram:
 		new=""
 		for i in element[1]:
@@ -134,7 +133,7 @@ def writeToFileTeste(countedNgram,ngramas):
 	os.chdir(cwd)
 	
 #receives ngram and author, and returns the number of ngrams in the test that match the ones inside the authors directory
-def likelihood(ngram,authorName):
+def likelihood(ngram, authorName):
 	grama = len(ngram[0][1])
 	
 	if grama == 2:
@@ -171,5 +170,6 @@ def main():
 	if dirs[1] == "teste":
 		identifyAuthor(cmdargs)
 
-
 main()
+
+

@@ -4,7 +4,8 @@
 
 
 
-names=(Corpora/treino/Einstein Corpora/treino/Tolkien
+names=(
+	Corpora/treino/Tolkien Corpora/treino/EcaDeQueiros 
 	#Corpora/test2.txt para adicionar mais filenames
 	#devem estar separados por espacos
 	)
