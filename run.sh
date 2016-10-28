@@ -3,13 +3,12 @@
 # basic file renamer
 
 
-
-names=(
-	Corpora/treino/Tolkien Corpora/treino/EcaDeQueiros 
-	#Corpora/test2.txt para adicionar mais filenames
-	#devem estar separados por espacos
+tests=(
+	Corpora/teste/500Palavras
+	Corpora/teste/1000Palavras
 	)
-for i in ${names[*]}; 
+
+for i in ${tests[*]}; 
 do
-	python proj.py $i bigramas
+	python proj.py $i bigrams
 done
