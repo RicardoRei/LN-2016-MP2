@@ -8,12 +8,14 @@ from ngram import *
 #--------------------------------------------------------------------------------------------------
 
 training_dir = "Corpora/treino/"
-samples_dir = ["500Palavras", "1000Palavras"]
+#samples_dir = ["500Palavras", "1000Palavras"]
+#samples_dir = ["10Palavras"]
+samples_dir = ["developmentCorpus"]
 
 test_dir = "Corpora/teste/"
 authors = ["AlmadaNegreiros", "CamiloCasteloBranco", "EcaDeQueiros", \
 			"JoseRodriguesSantos", "JoseSaramago", "LuisaMarquesSilva"]
-
+#authors = ["Tolkien"]
 
 def identifyAuthor(dir, ngramType):
 	sample_dir = test_dir + dir
@@ -23,21 +25,23 @@ def identifyAuthor(dir, ngramType):
 			counted_ngram = createTextCountedNgram(textPath=sample_dir + "/", 
 												   textFilename=file, 
 												   ngramType=ngramType)
-			compareWithAuthorsNgrams(ngram=countedNgramToDictionary(counted_ngram), ngramType=ngramType)
+			result = compareWithAuthorsNgrams(ngram=countedNgramToDictionary(counted_ngram), 
+											  ngramType=ngramType)
+			print 'result for file: ' + file + ' ' + str(result)
+
 
 def compareWithAuthorsNgrams(ngram, ngramType):
-	closest_author = ("Unkown", float("inf"))
+	closest_author = ("Unkown", float("-inf"))
 	for author in authors:
-		author_file = open(training_dir + author + "/" + ngramType + "Profile.txt", "r")
+		author_file = open(training_dir + author + "/" + ngramType + author, "r")
 		author_ngram = countedNgramFileToDictionary(file=author_file)
 		value = distanceBetweenProfiles(author_ngram, ngram, ngramType)
 		author_file.close()
-
-		print (author, value)
+		print 'value: ' + str(value) + ' for author '+ author
 		if value > closest_author[1]:
 			closest_author = (author, value)
-	print "closest one:"
-	print closest_author
+
+	return closest_author
 
 def distanceBetweenProfiles(knownProfileFile, unknownProfileFile, ngramType):
 	def F(bigram, dictionary):
@@ -45,9 +49,10 @@ def distanceBetweenProfiles(knownProfileFile, unknownProfileFile, ngramType):
 			return dictionary[bigram]
 		except KeyError:
 			return 0
+
 	SUM = 0
 	for key in unknownProfileFile:
-		aux1 = int(F(key, unknownProfileFile))
+		SUM = SUM + int(F(key, knownProfileFile))
 	return SUM
 
 def main():
@@ -57,7 +62,8 @@ def main():
 	
 	if cmd == "train":
 		for author in authors:
-			counted_ngram = createAuthorCountedNgram(author= author, ngramType="bigrams") 
+			counted_ngram = createAuthorCountedNgram(author_directory= training_dir + author, 
+													 ngramType="bigrams") 
 			writeNgramTofile(directoryName=training_dir + author, 
 							  name = ngramType + author, 
 							  counted_ngram=counted_ngram)

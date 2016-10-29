@@ -44,10 +44,9 @@ def createNgram(ngramType, tokens):
 		return nltk.trigrams(tokens)
 
 #@brief: 
-#	This funtion will create a big ngram with all the words presented in the texts inside the
-#	authors folder.
-def createAuthorCountedNgram(author, ngramType):
-	author_directory = training_dir + author
+#	This funtion will create a big ngram of the type specified on argument ngramType with all the 
+# 	words presented in the texts inside the authors folder.
+def createAuthorCountedNgram(author_directory, ngramType):
 	authorText = ""
 	for file in os.listdir(author_directory):
 		if "grams" not in file and file.endswith(".txt"):
@@ -100,7 +99,7 @@ def writeNgramTofile(directoryName, name, counted_ngram):
 def countedNgramToDictionary(ngram):
 	result = dict()
 	for e in ngram:
-		result[e[1]] = e[0]
+		result[(e[1][0].encode('utf-8'), e[1][1].encode('utf-8'))] = e[0]
 	return result
 
 #@brief:
