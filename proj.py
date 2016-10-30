@@ -52,8 +52,10 @@ def distanceBetweenProfiles(knownProfileFile, unknownProfileFile, ngramType):
 
 	SUM = 0
 	for key in unknownProfileFile:
-		SUM = SUM + int(F(key, knownProfileFile))
-	return SUM
+		if key != "Ngram_Info":
+			SUM = SUM + int(F(key, knownProfileFile))
+	#print (SUM , float(knownProfileFile["Ngram_Info"][0]))
+	return SUM/ float(knownProfileFile["Ngram_Info"][0])
 
 def main():
 	cmdargs = sys.argv

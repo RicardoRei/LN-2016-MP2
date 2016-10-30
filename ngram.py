@@ -23,16 +23,18 @@ def countNgramFrequency(ngram_tokens):
 		return item[1][0]
 
 	from collections import defaultdict
+	total = 0
 
 	counts = defaultdict(int)
 	for bigram in ngram_tokens:
 		counts[bigram] += 1
+		total += 1
 
 	result = list()
 	for bigram, count in counts.iteritems():
 		result.append((count, bigram))
 
-	return sorted(result, key=getKey)
+	return sorted(result, key=getKey) + [(str(total),)]
 
 #@brief: 
 #	used to create different ngrams with the tokens from the nltk.
@@ -82,11 +84,17 @@ def writeNgramTofile(directoryName, name, counted_ngram):
 		os.remove(name)
 		
 	outputFile = open(name, "a+")
-	for element in counted_ngram:
+
+	for element in counted_ngram[:-1]:
 		new = ""
 		for i in element[1]:
 			new = new + i + " "
 		outputFile.write(new.encode('utf-8') + " " + str(element[0])+"\n")
+	
+	new = ""
+	for i in counted_ngram[-1]:
+		new = new + str(i) + " "
+	outputFile.write("Ngram_Info: " + new.encode('utf-8')+ "\n")
 
 	outputFile.close()
 	os.chdir(cwd)
@@ -98,8 +106,9 @@ def writeNgramTofile(directoryName, name, counted_ngram):
 #	  Output = { ('volta', 'ter'): 2, ('porque', 'era'): 1 }
 def countedNgramToDictionary(ngram):
 	result = dict()
-	for e in ngram:
+	for e in ngram[:-1]:
 		result[(e[1][0].encode('utf-8'), e[1][1].encode('utf-8'))] = e[0]
+	result["Ngram_Info"] = ngram[-1]
 	return result
 
 #@brief:
@@ -107,7 +116,10 @@ def countedNgramToDictionary(ngram):
 def countedNgramFileToDictionary(file):
 	result = dict()
 	for line in file:
-		w1, w2, count = line.split()
-		bigram = (w1, w2)
-		result[bigram] = count
+		if line.startswith("Ngram_Info"):
+			result["Ngram_Info"] = tuple(line.split()[1:])
+		else:
+			w1, w2, count = line.split()
+			bigram = (w1, w2)
+			result[bigram] = count
 	return result
