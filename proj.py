@@ -13,9 +13,9 @@ training_dir = "Corpora/treino/"
 samples_dir = ["developmentCorpus"]
 
 test_dir = "Corpora/teste/"
-authors = ["AlmadaNegreiros", "CamiloCasteloBranco", "EcaDeQueiros", \
-			"JoseRodriguesSantos", "JoseSaramago", "LuisaMarquesSilva"]
-#authors = ["Tolkien"]
+#authors = ["AlmadaNegreiros", "CamiloCasteloBranco", "EcaDeQueiros", \
+#			"JoseRodriguesSantos", "JoseSaramago", "LuisaMarquesSilva"]
+authors = ["Tolkien"]
 
 def identifyAuthor(dir, ngramType):
 	sample_dir = test_dir + dir
@@ -33,7 +33,7 @@ def identifyAuthor(dir, ngramType):
 def compareWithAuthorsNgrams(ngram, ngramType):
 	closest_author = ("Unkown", float("-inf"))
 	for author in authors:
-		author_file = open(training_dir + author + "/" + ngramType + author, "r")
+		author_file = open(training_dir + author + "/" + ngramType + author + ".txt", "r")
 		author_ngram = countedNgramFileToDictionary(file=author_file)
 		value = distanceBetweenProfiles(author_ngram, ngram, ngramType)
 		author_file.close()
@@ -65,9 +65,9 @@ def main():
 	if cmd == "train":
 		for author in authors:
 			counted_ngram = createAuthorCountedNgram(author_directory= training_dir + author, 
-													 ngramType="bigrams") 
+													 ngramType=ngramType) 
 			writeNgramTofile(directoryName=training_dir + author, 
-							  name = ngramType + author, 
+							  name = ngramType + author + ".txt", 
 							  counted_ngram=counted_ngram)
 
 	if cmd == "test":

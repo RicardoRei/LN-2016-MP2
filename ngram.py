@@ -40,6 +40,8 @@ def countNgramFrequency(ngram_tokens):
 #	used to create different ngrams with the tokens from the nltk.
 #
 def createNgram(ngramType, tokens):
+	#if ngramType == "unigrams":
+		#tokens = [token.lower() for token in tokens if (len(token) > 1)] #same as unigrams
 	if ngramType == "bigrams":
 		return nltk.bigrams(tokens)
 	if ngramType == "trigrams":
