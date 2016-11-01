@@ -1,6 +1,3 @@
-! It  1
-. balelas  1
-. It  1
 In the  1
 It was  2
 Olá In  1
@@ -12,13 +9,13 @@ created the  1
 everyone was  2
 god created  1
 green and  2
-happy .  2
+happy balelas  1
 is a  1
 nice thing  1
-shire .  1
+shire It  1
 the shire  1
 the beggining  1
-thing !  1
+thing It  1
 was happy  2
 was green  2
-Ngram_Info: 30 
+Ngram_Info: 26 

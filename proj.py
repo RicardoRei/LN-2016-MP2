@@ -8,9 +8,9 @@ from ngram import *
 #--------------------------------------------------------------------------------------------------
 
 training_dir = "Corpora/treino/"
-#samples_dir = ["500Palavras", "1000Palavras"]
+samples_dir = ["500Palavras", "1000Palavras"]
 #samples_dir = ["10Palavras"]
-samples_dir = ["developmentCorpus"]
+#samples_dir = ["developmentCorpus"]
 
 test_dir = "Corpora/teste/"
 authors = ["AlmadaNegreiros", "CamiloCasteloBranco", "EcaDeQueiros", \
