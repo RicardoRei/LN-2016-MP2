@@ -26,13 +26,17 @@ def countNgramFrequency(ngram_tokens):
 	total = 0
 
 	counts = defaultdict(int)
-	for bigram in ngram_tokens:
-		counts[bigram] += 1
+	for ngram in ngram_tokens:
+		counts[ngram] += 1
 		total += 1
 
 	result = list()
-	for bigram, count in counts.iteritems():
-		result.append((count, bigram))
+	for ngram, count in counts.iteritems():
+		#in case ngram is a unigram the element is a string (not a tuple) and the writeNgramToFile
+		# function in the loop at line 99 will break the string in elements.
+		if not isinstance(ngram, tuple):
+			ngram = (ngram, )
+		result.append((count, ngram))
 
 	return sorted(result, key=getKey) + [(str(total),)]
 
@@ -40,8 +44,8 @@ def countNgramFrequency(ngram_tokens):
 #	used to create different ngrams with the tokens from the nltk.
 #
 def createNgram(ngramType, tokens):
-	#if ngramType == "unigrams":
-		#tokens = [token.lower() for token in tokens if (len(token) > 1)] #same as unigrams
+	if ngramType == "unigrams":
+		return tokens
 	if ngramType == "bigrams":
 		return nltk.bigrams(tokens)
 	if ngramType == "trigrams":
@@ -59,8 +63,9 @@ def createAuthorCountedNgram(author_directory, ngramType):
 			f.close()
 
 	tokens = nltk.word_tokenize(authorText)
-	ngrams = createNgram(ngramType, tokens)	
+	ngrams = createNgram(ngramType, tokens)
 	return countNgramFrequency(list(ngrams))
+	
 
 #@brief:
 #	This funtion creates a Ngram for a Specific Text.
@@ -70,6 +75,7 @@ def createTextCountedNgram(textPath, textFilename, ngramType):
 	f1 = open(textPath + textFilename, 'r')
 	processed_text = processText(f1).decode('utf-8')
 	f1.close()
+
 	tokens = nltk.word_tokenize(processed_text)
 	ngrams = createNgram(ngramType, tokens)
 	return countNgramFrequency(list(ngrams))
@@ -109,7 +115,10 @@ def writeNgramTofile(directoryName, name, counted_ngram):
 def countedNgramToDictionary(ngram):
 	result = dict()
 	for e in ngram[:-1]:
-		result[(e[1][0].encode('utf-8'), e[1][1].encode('utf-8'))] = e[0]
+		key = tuple()
+		for word in e[1]:
+			key = key + (word.encode('utf-8'),)
+		result[key] = e[0]
 	result["Ngram_Info"] = ngram[-1]
 	return result
 
@@ -121,7 +130,7 @@ def countedNgramFileToDictionary(file):
 		if line.startswith("Ngram_Info"):
 			result["Ngram_Info"] = tuple(line.split()[1:])
 		else:
-			w1, w2, count = line.split()
-			bigram = (w1, w2)
-			result[bigram] = count
+			count = line.split()[-1]
+			ngram = tuple(line.split()[:-1])
+			result[ngram] = count
 	return result

@@ -13,9 +13,9 @@ training_dir = "Corpora/treino/"
 samples_dir = ["developmentCorpus"]
 
 test_dir = "Corpora/teste/"
-#authors = ["AlmadaNegreiros", "CamiloCasteloBranco", "EcaDeQueiros", \
-#			"JoseRodriguesSantos", "JoseSaramago", "LuisaMarquesSilva"]
-authors = ["Tolkien"]
+authors = ["AlmadaNegreiros", "CamiloCasteloBranco", "EcaDeQueiros", \
+			"JoseRodriguesSantos", "JoseSaramago", "LuisaMarquesSilva"]
+#authors = ["Tolkien"]
 
 def identifyAuthor(dir, ngramType):
 	sample_dir = test_dir + dir
@@ -44,9 +44,9 @@ def compareWithAuthorsNgrams(ngram, ngramType):
 	return closest_author
 
 def distanceBetweenProfiles(knownProfileFile, unknownProfileFile, ngramType):
-	def F(bigram, dictionary):
+	def F(ngram, dictionary):
 		try:
-			return dictionary[bigram]
+			return dictionary[ngram]
 		except KeyError:
 			return 0
 
@@ -54,8 +54,8 @@ def distanceBetweenProfiles(knownProfileFile, unknownProfileFile, ngramType):
 	for key in unknownProfileFile:
 		if key != "Ngram_Info":
 			SUM = SUM + int(F(key, knownProfileFile))
-	#print (SUM , float(knownProfileFile["Ngram_Info"][0]))
-	return SUM/ float(knownProfileFile["Ngram_Info"][0])
+
+	return SUM / float(knownProfileFile["Ngram_Info"][0])
 
 def main():
 	cmdargs = sys.argv
@@ -72,7 +72,7 @@ def main():
 
 	if cmd == "test":
 		for dir in samples_dir:
-			identifyAuthor(dir=dir, ngramType="bigrams")
+			identifyAuthor(dir=dir, ngramType=ngramType)
 
 main()
 
