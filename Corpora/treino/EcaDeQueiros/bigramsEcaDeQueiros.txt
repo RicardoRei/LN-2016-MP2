@@ -247929,4 +247929,4 @@ zêlo e  1
 único som  1
 únicos que  1
 útil ,  1
-Ngram_Info: 547815 
+Ngrams_Info: 547815 
